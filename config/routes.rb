@@ -5,9 +5,14 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   namespace :admin do
-        resources :jobs
+        resources :jobs do
+          collection do
+            post :bulk_update
+          end
+        end
+
       end
-      
+
       resources :jobs
       root 'jobs#index'
 end
