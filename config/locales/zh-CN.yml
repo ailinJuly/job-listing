@@ -1,0 +1,6 @@
+"zh-CN":
+  bulk_delete: 批次删除
+  bulk_update: 批次更新
+  admin:
+    bulk_update: 批次更新
+    bulk_delete: 批次删除
