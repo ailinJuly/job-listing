@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120084919) do
+ActiveRecord::Schema.define(version: 20171120135445) do
 
   create_table "jobs", force: :cascade do |t|
     t.string   "title"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20171120084919) do
     t.string   "contact_email"
     t.boolean  "is_hidden",        default: true
     t.string   "status"
+    t.integer  "row_order"
+    t.index ["row_order"], name: "index_jobs_on_row_order"
   end
 
   create_table "users", force: :cascade do |t|

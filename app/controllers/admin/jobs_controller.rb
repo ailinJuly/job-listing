@@ -2,7 +2,7 @@ class Admin::JobsController< ApplicationController
    before_action :authenticate_user! , only: [:new, :edit, :create, :update, :destroy]
    before_action :require_is_admin
    def index
-    @jobs = Job.all
+    @jobs = Job.rank(:row_order).all
   end
 
    def new
@@ -60,11 +60,18 @@ class Admin::JobsController< ApplicationController
           flash[:alert] = "成功完成#{total}笔更新！"
         end
       end
-
      end
-
      redirect_to admin_jobs_path
+   end
 
+   def reorder
+     @job = Job.find(params[:id])
+     @job.row_order_position = params[:position]
+     @job.save!
+     respond_to do |format|
+       format.html { redirect_to admin_jobs_path }
+       format.json { render :json => { :message => "ok" }}
+    end
    end
 private
 

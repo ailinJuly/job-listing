@@ -4,4 +4,6 @@ class Job < ApplicationRecord
   validates :wage_lower_bound, presence: true
   validates :wage_lower_bound, numericality: { greater_than: 0}
   STATUS = ["hidden","public"]
+  include RankedModel
+  ranks :row_order
 end

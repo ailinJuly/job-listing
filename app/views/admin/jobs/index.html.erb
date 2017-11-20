@@ -6,23 +6,28 @@
     <br>
     <%= form_tag bulk_update_admin_jobs_path,:class => 'form-inline' do%>
     <table class="table table-hover">
+      <thead>
       <tr>
           <th><%= check_box_tag "全选","1",false, :id =>"toggle_all" %></th>
         <th>职位名称</th>
         <th>操作</th>　
         <th>更新时间</th>
       </tr>
+      </thead>
+      <tbody class="sortable">
         <% @jobs.each do |job| %>
-            <tr>
+            <tr data-reorder-url= "<%= reorder_admin_job_path(job)  %>">
               <td>
                  <%= check_box_tag "ids[]", job.id %>
               </td>
-
                 <td>
+                   <span class="sortable_icon">☰</span>
                     <%= render_job_status(job) %>
                     <%= link_to(job.title, admin_job_path(job)) %>
                 </td>
                 <td>
+                    <%= link_to "置顶", reorder_admin_job_path(job, :position => :first), :method => :post, :class => "btn btn-default" %>
+                    <%= link_to "置底", reorder_admin_job_path(job, :position => :last), :method => :post, :class => "btn btn-default" %>
                     <%= link_to("Edit", edit_admin_job_path(job), class: "btn btn-sm btn-default")%>
                     <%= link_to("Delete", admin_job_path(job),    class: "btn btn-sm btn-default",
                           method: :delete, data: { confirm: "Are you sure?" } )%>
@@ -30,6 +35,7 @@
                 <td><%= job.updated_at %></td>
             </tr>
         <% end %>
+        </tbody>
     </table>
     <p>
       <%= select_tag :job_status, options_for_select(Job::STATUS), :class => "form-control" %>
@@ -49,4 +55,25 @@
         $("input[name='ids[]']").prop("checked", false);
       }
     })
-  </script>
+
+
+  $( ".sortable" ).sortable({
+    axis: 'y',       // 限制只能上下拖拉
+    items: 'tr',     // 拖拉整个 tr
+    cursor: 'move',  // 变更拖拉时的 icon
+    handle: ".sortable_icon",  // 限制只有点 ☰ 才能开始拖拉，砍掉这行的话，会是整个 tr 都可以进行拖拉，你可以试试看
+    stop: function(e, ui){     // 当拖拉结束时，会调用这个方法
+      ui.item.children('td').effect('highlight', {}, 1000)
+    },
+    update: function(e, ui) {   // 当拖拉结束并且 DOM 上的位置变更时，会调用这个方法
+      reorder_url = ui.item.data('reorder-url')
+      position = ui.item.index()  // 取得顺序
+      $.ajax({
+       type: 'POST',
+       url: reorder_url,
+       dataType: 'json',
+       data: { position: position }
+      })
+    }
+  });
+   </script>
