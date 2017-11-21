@@ -12,7 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require validator.min
 //= require turbolinks
+
 //= require_tree .
 //= require bootstrap/alert
 //= require bootstrap/dropdown
