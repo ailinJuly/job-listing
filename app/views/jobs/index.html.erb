@@ -3,6 +3,14 @@
 </div>
 <br>
 <br>
+<%= search_form_for @q do |job|%>
+  <p>
+      <%= job.search_field :title_cont,:placeholder => "职位名",:class => "form-control" %></p>
+  <p><%= job.search_field :contact_email_cont,:placeholder => "联系方式",:class => "form-control" %></p>
+  <p class="text-right">
+    <%= submit_tag "送出筛选",:class => "btn btn-default" %>
+  </p>
+<% end %>
 <table class="table table-boldered">
     <% @jobs.each do |job| %>
         <tr>

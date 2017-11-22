@@ -1,7 +1,10 @@
 class JobsController < ApplicationController
    before_action :authenticate_user! , only: [:new, :edit, :create, :update, :destroy]
   def index
-   @jobs = Job.where(:status=> "public").order("created_at DESC")
+
+
+    @q = Job.where(:status=> "public").ransack(params[:q])
+    @jobs = @q.result.rank(:row_order)
 
  end
 

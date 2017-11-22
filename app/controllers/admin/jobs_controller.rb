@@ -1,8 +1,10 @@
 class Admin::JobsController< ApplicationController
    before_action :authenticate_user! , only: [:new, :edit, :create, :update, :destroy]
    before_action :require_is_admin
+
    def index
-    @jobs = Job.rank(:row_order).all
+    @q = Job.ransack(params[:q])
+    @jobs = @q.result.rank(:row_order).page(params[:page])
   end
 
    def new
