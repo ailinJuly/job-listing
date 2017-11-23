@@ -2,6 +2,13 @@
     <div class="job">
         <%= link_to("Add a job", new_admin_job_path, class: "btn btn-primary pull-right") %>
     </div>
+
+    <div class="btn-group">
+      <%= link_to "全部 (#{@jobs.size})", admin_jobs_path(@jobs), :class => "btn btn-success btn-group #{(params[:status].blank?) ? "active" : ""}" %>
+      <% Job::STATUS.each do |s| %>
+        <%= link_to t(s,:scope =>"job.status")  + " (#{@jobs.by_status(s).size})", admin_jobs_path(:status => s),:class => "btn btn-success btn-group #{(params[:status] == s)? "active" : ""}" %>
+        <% end %>
+    </div>
     <br>
     <br>
     <%= form_tag bulk_update_admin_jobs_path,:class => 'form-inline' do%>

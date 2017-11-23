@@ -2,5 +2,8 @@
   bulk_delete: 批次删除
   bulk_update: 批次更新
   admin:
+    job:
+      public: 公共
+      hidden: 隐藏
     bulk_update: 批次更新
     bulk_delete: 批次删除

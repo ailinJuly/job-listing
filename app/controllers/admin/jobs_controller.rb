@@ -4,7 +4,11 @@ class Admin::JobsController< ApplicationController
 
    def index
     @q = Job.ransack(params[:q])
-    @jobs = @q.result.rank(:row_order).page(params[:page])
+    @jobs = @q.result.rank(:row_order)
+
+    if params[:status].present? && Job::STATUS.include?(params[:status])
+      @jobs = @jobs.by_status(params[:status])
+    end
   end
 
    def new

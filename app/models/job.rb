@@ -7,4 +7,6 @@ class Job < ApplicationRecord
   STATUS = ["hidden","public"]
   include RankedModel
   ranks :row_order
+  scope :by_status, ->(s) { where(:status => s)}
+
 end
